@@ -1,8 +1,9 @@
 //const list = require("../models/file");
-import list from '../models/file.js';
+import p_list_model from '../models/problem_list_model.js';
 
 const getproblemlist= async(req,res)=>{
-     const mydata = await list.find({});
+     const mydata = await p_list_model.find();
+     console.log(mydata);
      res.status(200).json({mydata});
 };
 const testingmessage = async (req,res)=>{
