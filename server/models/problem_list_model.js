@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const Problem_List_Schema= new mongoose.Schema({
@@ -10,6 +11,14 @@ problem_des:{
 level:{
     type: String,
     required: true
+},
+ID:{
+    type:Number,
+    required:true
+},
+pcode:{
+    type:Number,
+    required:true
 }
 
 })

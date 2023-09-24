@@ -1,0 +1,24 @@
+.p-header
+{
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px #888888;
+
+}
+.p-description
+{
+    font-size: 60px;
+}
+.p-input
+{
+
+}
+.p-output
+{
+
+}
+.codecontainer
+{
+    padding: 50px;
+}

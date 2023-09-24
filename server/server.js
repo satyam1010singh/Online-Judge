@@ -1,66 +1,13 @@
-/*import express from 'express';
-import problem_router from './routes/problem_list_route.js';
-import DBconnection from './database/db.js';
-import DB_userconnection from './database/db_user.js';
-import p_list_model from './models/file.js';
-import UserModel from './models/users.js';
-
-
-const app= express();
-
-
-//middlewares
-
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
-
-/*await DBconnection();
-await DB_userconnection();
-
-app.get("/", (req,res)=>{
-res.send("helloguys")
-});
-app.use("/api",problem_router);
-
-app.get('/list', function(req,res){
-    p_list_model.find()
-    .then((data) =>{
-        console.log(data);
-    })
-    .catch((err)=>console.log(err));
-    
-});
-app.get('/register', function(req,res){
-    UserModel.find()
-    .then((data) =>{
-        console.log(data);
-    })
-    .catch((err)=>console.log(err));
-    
-});
-
-app.post('/registers',(req,res)=>{
-    UserModel.create(req.body)
-    .then(Users => res.json(Users))
-    .catch(err => res.json(err))
-});
-
-
-
-
-    
-
-app.listen(8004, ()=>{
-console.log("server is listening on port 8002");
-});
-*/
 import express from 'express';
 import cors from 'cors';
 import problem_router from './routes/problem_list_route.js';
 import DB_connection from './database/db.js';
+import executecode from './executecode.js';
+import generatefile from './generatefile.js';
 
 import Problem_List_model from './models/problem_list_model.js';
 import UserModel from './models/users_model.js';
+import Problem_Detail_Model from './models/Problem_Details.js';
 
 const app = express();
 
@@ -91,16 +38,30 @@ app.get('/list', async (req, res) => {
   }
 });
 
-app.get('/register', async (req, res) => {
+//for Problem Details
+app.get('/problemdetails',async(req,res)=>
+{
+  const {pcode} = req.query;
   try {
-    const data = await UserModel.find();
+    const data = await Problem_Detail_Model.findOne({pcode:pcode});
     console.log(data);
     res.json(data);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: 'An error occurred' });
+  } catch (error) {
+    console.log(error);
   }
+
 });
+//for code submission
+app.post('/submit',async(req,res)=>{
+  const {language,inputcode} = req.body;
+  if(inputcode===undefined)
+  return res.status(404).json({success:false,error:'empty code'});
+
+  const filepath = await generatefile(language,inputcode);
+
+  const result= await executecode(filepath);
+  res.json(result);
+})
 
 //for login
 app.post('/login',async(req,res)=>{
