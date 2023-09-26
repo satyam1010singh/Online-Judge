@@ -33,8 +33,11 @@ function Show_Problem_List()
         get_problem_list();
     },[])
         return <>
-            <h1>Problem list</h1>
-            <table >
+            <header>
+                <h1>Problem list</h1>
+                </header>
+            <div>
+            <table className="content-table">
                 <thead>
                     <tr>
                     <th>ID</th>
@@ -47,6 +50,7 @@ function Show_Problem_List()
                     <ProblemListData problemlist={problemlist}/>
                 </tbody>
             </table>
+            </div>
            
         </>
 }

@@ -9,11 +9,13 @@ function ShowProblemDetails()
         const {pcode} = useParams();
         const [problemdetails,setProblem_details] = useState('')
         const [inputcode,setinputcode] = useState('')
+        const [custominput,setcustominput] = useState('')
         const HandlecodeSubmit = async()=>
         {
             const inputdetails={
                 language:'cpp',
-                inputcode:inputcode
+                inputcode:inputcode,
+                custominput:custominput
             }
 
             try {
@@ -62,6 +64,7 @@ function ShowProblemDetails()
                 
                 <textarea rows='20' cols='80' value={inputcode} onChange={(e)=>{setinputcode(e.target.value);}}></textarea>
                 <button onClick={HandlecodeSubmit}> Submit </button>
+                <textarea rows='5' cols='20' value={custominput} onChange={(e)=>{setcustominput(e.target.value);}}></textarea>
             </div>
             
             

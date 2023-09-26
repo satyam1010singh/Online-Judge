@@ -12,13 +12,27 @@ if(!fs.existsSync(diroutput))
 {
     fs.mkdirSync(diroutput,{recursive:true});
 }
-const executecode =(filepath)=>
+const appendcustominput = async(path,data) =>{
+    try {
+          fs.appendFile(path,data,(err)=>{
+            if(err)
+            console.log(err)
+         })
+    } catch (error) {
+        console.log(error);
+    }
+};
+const executecode =(filepath,custominput)=>
 {
     const jobID = path.basename(filepath).split(".")[0];
     const outputpath = path.join(diroutput,`${jobID}.exe`)
+    const custominputpath = path.join(diroutput,`${jobID}.input.txt`)
     console.log(jobID);
+    appendcustominput(custominputpath,custominput)
+    
+    
     return new Promise((resolve,reject)=>{
-        child.exec(`g++ ${filepath} -o ${outputpath}&& cd ${diroutput}&& .\\${jobID}.exe`,
+        child.exec(`g++ ${filepath} -o ${outputpath}&& cd ${diroutput}&& .\\${jobID}.exe < ${custominputpath}`,
         (error,stdout,stderr)=>{
             if(error){
             reject(error);

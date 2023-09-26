@@ -53,13 +53,13 @@ app.get('/problemdetails',async(req,res)=>
 });
 //for code submission
 app.post('/submit',async(req,res)=>{
-  const {language,inputcode} = req.body;
+  const {language,inputcode,custominput} = req.body;
   if(inputcode===undefined)
   return res.status(404).json({success:false,error:'empty code'});
 
   const filepath = await generatefile(language,inputcode);
 
-  const result= await executecode(filepath);
+  const result= await executecode(filepath,custominput);
   res.json(result);
 })
 
