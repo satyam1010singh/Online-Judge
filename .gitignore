@@ -1,5 +1,3 @@
 
-./node_modules
-./output
-./cppcodes
+./node_modules,
 ./env
