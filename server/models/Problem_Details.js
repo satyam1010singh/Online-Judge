@@ -11,10 +11,19 @@ const Problem_Detail_Schema = new mongoose.Schema({
     Description:{
         type:String
     },
-    Sample_Input:{
+    Input:{
         type:String
     },
-    Sample_Output:{
+    Output:{
+        type:String
+    },
+    testcases:{
+        type:Array
+    },
+    outputcases:{
+        type:Array
+    },
+    code :{
         type:String
     }
 })

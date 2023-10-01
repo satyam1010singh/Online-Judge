@@ -98,9 +98,6 @@ app.post('/signup', async (req, res) => {
     else{
         await UserModel.insertMany([newdata])
         res.json("does not exist")
-        
-        //const newUser = await UserModel.create(req.body);
-    //res.json(newUser);
     }
     
   } catch (err) {
@@ -109,6 +106,19 @@ app.post('/signup', async (req, res) => {
     res.status(500).json({ error: 'An error occurred' });
   }
 });
+//send latest code to database
+app.post('/sendtodb',async(req,res)=>{
+  const {inputcode} = req.body;
+  const newdata={
+    inputcode:inputcode
+  }
+  try {
+    await Problem_Detail_Model.insertMany([newdata]);
+    res.json(newdata);
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 app.listen(8004, () => {
   console.log("Server is listening on port 8004");
