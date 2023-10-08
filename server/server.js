@@ -4,7 +4,7 @@ import problem_router from './routes/problem_list_route.js';
 import DB_connection from './database/db.js';
 import executecode from './executecode.js';
 import generatefile from './generatefile.js';
-
+import bcrypt from "bcrypt";
 import Problem_List_model from './models/problem_list_model.js';
 import UserModel from './models/users_model.js';
 import Problem_Detail_Model from './models/Problem_Details.js';
@@ -68,10 +68,18 @@ app.post('/login',async(req,res)=>{
     const{email,password}=req.body;
 
     try {
-        const check=await UserModel.findOne({email:email})
+        const userlogin=await UserModel.findOne({email:email})
 
-        if(check){
-        res.json("exist")
+        if(userlogin){
+          const passwordmatch= await bcrypt.compare(password,userlogin.password);
+          const token = await userlogin.generateAuthToken();
+          console.log(token);
+          if(passwordmatch){
+        res.json("exist");
+          }
+          else{
+            res.json("does not exist")
+          }
         }
         else{
             res.json("does not exist")
@@ -84,10 +92,9 @@ app.post('/login',async(req,res)=>{
 //for signup
 app.post('/signup', async (req, res) => {
     const{email,password}=req.body;
-    const newdata={
-        email:email,
-        password:password
-    }
+    const newdata=new UserModel({
+        email,password
+    })
   try {
 
     const check=await UserModel.findOne({email:email})
@@ -96,7 +103,8 @@ app.post('/signup', async (req, res) => {
     res.json("exist")
     }
     else{
-        await UserModel.insertMany([newdata])
+      await newdata.save();
+        //await UserModel.bulkSave([newdata])
         res.json("does not exist")
     }
     
