@@ -74,8 +74,10 @@ app.post('/login',async(req,res)=>{
           const passwordmatch= await bcrypt.compare(password,userlogin.password);
           const token = await userlogin.generateAuthToken();
           console.log(token);
+          
           if(passwordmatch){
-        res.json("exist");
+            res.status(200).send({ tokenvalue: token, useremail: userlogin.email, message: "Logged in successfully" });
+       
           }
           else{
             res.json("does not exist")
@@ -104,7 +106,6 @@ app.post('/signup', async (req, res) => {
     }
     else{
       await newdata.save();
-        //await UserModel.bulkSave([newdata])
         res.json("does not exist")
     }
     

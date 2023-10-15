@@ -1,7 +1,7 @@
 import { useState ,useEffect} from "react";
 import axios from 'axios'
 import ProblemListData from "./Components/Problem_LIst_Data";
-import './problemlisttable.css';
+
 
 
 
@@ -36,14 +36,14 @@ function Show_Problem_List()
             <header>
                 <h1>Problem list</h1>
                 </header>
-            <div>
-            <table className="content-table">
-                <thead>
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                    <th>ID</th>
-                    <th>DESCRIPTION</th>
-                    <th>LEVEL</th>
-                    <th>LINK</th>
+                    <th scope="col" class="px-6 py-3">ID</th>
+                    <th scope="col" class="px-6 py-3">DESCRIPTION</th>
+                    <th scope="col" class="px-6 py-3">LEVEL</th>
+                    <th scope="col" class="px-6 py-3">LINK</th>
                     </tr>
                 </thead>
                 <tbody>
