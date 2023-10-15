@@ -70,18 +70,8 @@ app.post('/login',async(req,res)=>{
     try {
         const userlogin=await UserModel.findOne({email:email})
 
-        if(userlogin){
-          const passwordmatch= await bcrypt.compare(password,userlogin.password);
-          const token = await userlogin.generateAuthToken();
-          console.log(token);
-          
-          if(passwordmatch){
-            res.status(200).send({ tokenvalue: token, useremail: userlogin.email, message: "Logged in successfully" });
-       
-          }
-          else{
-            res.json("does not exist")
-          }
+        if(check){
+        res.json("exist")
         }
         else{
             res.json("does not exist")
@@ -105,7 +95,7 @@ app.post('/signup', async (req, res) => {
     res.json("exist")
     }
     else{
-      await newdata.save();
+        await UserModel.insertMany([newdata])
         res.json("does not exist")
     }
     
