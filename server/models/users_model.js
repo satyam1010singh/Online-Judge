@@ -27,12 +27,14 @@ userSchema.pre('save', async function (next){
 
 userSchema.methods.generateAuthToken = async function () {
     try {
-        const token = jwt.sign({_id:this._id},process.env.SECRET_KEY,{expiresIn:"1D"});
+        const token = jwt.sign({_id:this._id},process.env.SECRET_KEY,{
+            expiresIn: "7d",
+          });
         this.tokens = this.tokens.concat({token:token});
         await this.save();
         return token;
     } catch (error) {
-        console.log(error)
+        console.log("error in token");
     }
 }
 const UserModel = mongoose.model('Users',userSchema);

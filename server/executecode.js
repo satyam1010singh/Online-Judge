@@ -32,7 +32,9 @@ const executecode =(filepath,custominput)=>
     
     
     return new Promise((resolve,reject)=>{
-        child.exec(`g++ ${filepath} -o ${outputpath}&& cd ${diroutput}&& .\\${jobID}.exe < ${custominputpath}`,
+        const separator = process.platform === "win32" ? "\\" : "/"; 
+        child.exec(`g++ ${filepath} -o ${outputpath} && cd ${diroutput} && .${separator}${jobID}.exe < ${custominputpath}`,
+        //child.exec(`g++ ${filepath} -o ${outputpath}&& cd ${diroutput}&& .\\${jobID}.exe < ${custominputpath}`,
         (error,stdout,stderr)=>{
             if(error){
             reject(error);
