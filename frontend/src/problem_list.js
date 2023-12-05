@@ -13,7 +13,7 @@ function Show_Problem_List()
     function get_problem_list()
     {
             try {
-                axios.get('http://localhost:8004/list')
+                axios.get(`${process.env.REACT_APP_SERVER_PATH}/list`)
                 .then((res)=>
                 {
                     //const data= res.json();

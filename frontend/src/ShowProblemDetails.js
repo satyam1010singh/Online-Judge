@@ -9,6 +9,7 @@ function ShowProblemDetails() {
     const { pcode } = useParams();
     const [verdict,setverdict] = useState('')
     const [problemdetails, setProblem_details] = useState('')
+    const [selectedLanguage, setSelectedLanguage] = useState("cpp");
     const [code, setCode] = useState(`#include <iostream>\nusing namespace std;\nint main()\n{\n  cout << "Hello World";\n  return 0;\n}`);
     const [custominput, setcustominput] = useState('')
     const [customoutput, setcustomoutput] = useState('')
@@ -16,7 +17,7 @@ function ShowProblemDetails() {
     const handleCodeChange = (newCode) => {
         setCode(newCode);
       };
- 
+      
     function getProblemDetails() {
         try {
             if(!isloggedin)
@@ -24,7 +25,7 @@ function ShowProblemDetails() {
                     navigate("/login");
             }
             
-            axios.get('http://localhost:8004/problemdetails', {
+            axios.get(`${process.env.REACT_APP_SERVER_PATH}/problemdetails`, {
                 params:
                 {
                     pcode
@@ -44,19 +45,30 @@ function ShowProblemDetails() {
     
     
     useEffect(() => {
+        if(selectedLanguage==='java')
+        {
+          setCode(`public class Main{
+            public static void main(String[] args){
+              System.out.println("Be Creative");
+            }
+          }`);
+        }
+        else{
+          setCode( `#include <iostream>\nusing namespace std;\nint main()\n{\n  cout << "Hello World";\n  return 0;\n}`);
+        }
         getProblemDetails();
-    }, [])
+    }, [selectedLanguage])
     const HandlecodeSubmit = async () => {
         const totaltestcases = problemdetails.testcases.length;
         for (let i = 0; i < totaltestcases; i++) {
             const inputdetails = {
-                language: 'cpp',
+                language: selectedLanguage,
                 inputcode: code,
                 custominput: problemdetails.testcases[i]
             }
 
             try {
-                const coderesult = await axios.post('http://localhost:8004/submit', inputdetails);
+                const coderesult = await axios.post(`${process.env.REACT_APP_SERVER_PATH}/submit`, inputdetails);
                 console.log(coderesult);
                 if (coderesult.data !== problemdetails.outputcases[i]) {
                     setverdict(`wrong output on test case ${i}`)               
@@ -70,13 +82,13 @@ function ShowProblemDetails() {
     };
     const HandleCustomOutput = async () => {
         const inputdetails = {
-            language: 'cpp',
+            language: selectedLanguage,
             inputcode: code,
             custominput: custominput
         }
 
         try {
-            const coderesult = await axios.post('http://localhost:8004/submit', inputdetails);
+            const coderesult = await axios.post(`${process.env.REACT_APP_SERVER_PATH}/submit`, inputdetails);
             console.log(coderesult);
             setcustomoutput(coderesult);
 
@@ -104,7 +116,38 @@ function ShowProblemDetails() {
 
                 </div>
             </div>
-
+            <div className="w-1/3  col-span-1 bg-slate-300 p-2 rounded shadow-md">
+        <div className="mb-4" >
+          <label
+            className="block text-gray-700 text-xl font-bold mb-2"
+            htmlFor="selectedLanguage"
+          >
+            Choose a Language:
+          </label>
+          <select
+           className="w-full p-2 border-2 border-black rounded shadow focus:outline-none "
+            id="selectedLanguage"
+            value={selectedLanguage}
+            required
+            onChange={(e) => setSelectedLanguage(e.target.value)}
+          >
+            <option value="cpp">C++</option>
+            <option value="java">Java</option>
+            {/* <option value="Hard">Hard</option> */}
+          </select>
+          {selectedLanguage === "java" && (
+            <p
+              style={{
+                color: "red",
+                fontWeight: "bold",
+                margin: "0rem 0rem 0.5rem 0.0rem",
+              }}
+            >
+              Please keep class name as "public class Main".
+            </p>
+          )}
+        </div>
+        </div>
             <div className="">
                 <h1>code</h1>
                 <CodeEditor code={code} onChange={handleCodeChange} />

@@ -22,7 +22,7 @@ const appendcustominput = async(path,data) =>{
         console.log(error);
     }
 };
-const executecode =(filepath,custominput)=>
+const executecode =(filepath,custominput,language)=>
 {
     const jobID = path.basename(filepath).split(".")[0];
     const outputpath = path.join(diroutput,`${jobID}.exe`)
@@ -33,7 +33,14 @@ const executecode =(filepath,custominput)=>
     
     return new Promise((resolve,reject)=>{
         const separator = process.platform === "win32" ? "\\" : "/"; 
-        child.exec(`g++ ${filepath} -o ${outputpath} && cd ${diroutput} && .${separator}${jobID}.exe < ${custominputpath}`,
+        const command = {
+            cpp: [
+              `g++ "${filepath}" -o "${outputpath}" && cd "${diroutput}" && .${separator}${jobID}.exe < "${custominputpath}"`,
+            ],
+            py: [`python ${filepath} < ${custominputpath}`],
+            java: [`java "${filepath}" < "${custominputpath}"`],
+          };
+        child.exec(command[language][0],
         //child.exec(`g++ ${filepath} -o ${outputpath}&& cd ${diroutput}&& .\\${jobID}.exe < ${custominputpath}`,
         (error,stdout,stderr)=>{
             if(error){

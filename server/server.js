@@ -59,7 +59,7 @@ app.post('/submit',async(req,res)=>{
 
   const filepath = await generatefile(language,inputcode);
 
-  const result= await executecode(filepath,custominput);
+  const result= await executecode(filepath,custominput,language);
   res.json(result);
 })
 

@@ -14,7 +14,7 @@ function Signup(){
     const Signupclick = (e) => {
         e.preventDefault();
         try {
-             axios.post('http://localhost:8004/signup',{email,password})
+             axios.post(`${process.env.REACT_APP_SERVER_PATH}/signup`,{email,password})
             .then((res)=>{
                 if(res.data==="exist")
                 {

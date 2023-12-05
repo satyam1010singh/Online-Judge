@@ -18,7 +18,7 @@ function Loginpage()
         e.preventDefault();
         try {
             
-            await axios.post('http://localhost:8004/login',{email,password})
+            await axios.post(`${process.env.REACT_APP_SERVER_PATH}/login`,{email,password})
             .then((res)=>{                
                 if(res.data==="does not exist")
                 {
